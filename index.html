@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Question Worth Asking ❤️</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+min-height:100vh;
+background:linear-gradient(135deg,#ffd1dc,#ffe4ec,#fff0f5);
+overflow-y:auto;
+display:flex;
+justify-content:center;
+padding:20px;
+}
+
+.hearts{
+position:fixed;
+inset:0;
+pointer-events:none;
+z-index:0;
+}
+
+.heart{
+position:absolute;
+color:#ff6b9d;
+animation:float 10s linear infinite;
+opacity:.6;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh);opacity:0;}
+20%{opacity:.7;}
+100%{transform:translateY(-120px);opacity:0;}
+}
+
+.card{
+width:100%;
+max-width:540px;
+background:white;
+border-radius:25px;
+padding:25px;
+box-shadow:0 10px 35px rgba(0,0,0,.12);
+z-index:2;
+position:relative;
+}
+
+h1{color:#ff4d88;margin-bottom:10px;text-align:center;}
+.subtitle{text-align:center;color:#777;margin-bottom:20px;}
+
+.hidden{display:none;}
+
+button{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:none;
+border-radius:15px;
+cursor:pointer;
+font-size:16px;
+transition:.3s;
+}
+
+button:hover{transform:scale(1.03);}
+.primary{background:#ff4d88;color:white;}
+.secondary{background:#eee;}
+
+.option{
+background:#fff5f8;
+border:2px solid #ffd3e2;
+}
+
+.option:hover{background:#ffe6ef;}
+
+.selected{
+background:#fff0f5;
+padding:10px;
+margin:8px 0;
+border-radius:10px;
+text-align:left;
+}
+
+.summary{
+background:#fff7fa;
+padding:15px;
+border-radius:15px;
+margin-top:10px;
+line-height:1.6;
+text-align:left;
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="card">
+
+<!-- PAGE 1 -->
+<div id="p1">
+<h1>❤️ Will You Go On A Date With Me?</h1>
+<p class="subtitle">A Question Worth Asking</p>
+
+<button class="primary" onclick="go('p2')">Yes ❤️</button>
+<button class="secondary" onclick="go('no1')">No</button>
+</div>
+
+<!-- NO -->
+<div id="no1" class="hidden">
+<h1>🥺 Are you sure?</h1>
+<button class="primary" onclick="go('p2')">Let me think again ❤️</button>
+<button class="secondary" onclick="go('no2')">Still no 😔</button>
+</div>
+
+<div id="no2" class="hidden">
+<h1>💔 One last chance?</h1>
+<button class="primary" onclick="go('p2')">Okay yes ❤️</button>
+</div>
+
+<!-- DATE -->
+<div id="p2" class="hidden">
+<h1>📅 Pick a Date</h1>
+<input type="date" id="date">
+<button class="primary" onclick="go('p3')">Next</button>
+</div>
+
+<!-- TIME -->
+<div id="p3" class="hidden">
+<h1>⏰ Choose Time</h1>
+
+<button class="option" onclick="setTime('4-5 PM')">Afternoon 4-5 PM</button>
+<button class="option" onclick="setTime('6-7 PM')">Evening 6-7 PM</button>
+<button class="option" onclick="setTime('8-9 PM')">Night 8-9 PM</button>
+<button class="option" onclick="setTime('10 PM')">Late Night 10 PM</button>
+</div>
+
+<!-- ACTIVITY -->
+<div id="p4" class="hidden">
+<h1>🎬 What would you like to do?</h1>
+
+<button class="option" onclick="setActivity('Movie 🎬')">Movie</button>
+<button class="option" onclick="setActivity('Long Walk 🚶')">Long Walk</button>
+<button class="option" onclick="setActivity('Long Drive 🚗')">Long Drive</button>
+<button class="option" onclick="setActivity('Photoshoot 📸')">Photoshoot</button>
+<button class="option" onclick="setActivity('Cafe ☕')">Cafe Chill</button>
+<button class="option" onclick="setActivity('Sunset 🌅')">Sunset</button>
+</div>
+
+<!-- LOCATION -->
+<div id="p5" class="hidden">
+<h1>📍 Where should we go?</h1>
+
+<button class="option" onclick="setLocation('City 🌆')">City</button>
+<button class="option" onclick="setLocation('Park 🌳')">Park</button>
+<button class="option" onclick="setLocation('Rooftop 🏙️')">Rooftop</button>
+<button class="option" onclick="setLocation('Cafe ☕')">Cafe</button>
+<button class="option" onclick="setLocation('Cinema 🎥')">Cinema</button>
+</div>
+
+<!-- FOOD -->
+<div id="p6" class="hidden">
+<h1>🍕 What are we eating?</h1>
+
+<button class="option" onclick="addFood('🍣 Sushi')">Sushi</button>
+<button class="option" onclick="addFood('🍝 Pasta')">Pasta</button>
+<button class="option" onclick="addFood('🍕 Pizza')">Pizza</button>
+<button class="option" onclick="addFood('🍔 Burger')">Burger</button>
+<button class="option" onclick="addFood('🍜 Ramen')">Ramen</button>
+<button class="option" onclick="addFood('🍰 Dessert')">Dessert</button>
+
+<div id="foodList"></div>
+
+<button class="primary" onclick="goFinal()">Finish ❤️</button>
+</div>
+
+<!-- FINAL -->
+<div id="p7" class="hidden">
+<h1>❤️ It's A Date</h1>
+<p class="subtitle">Something wonderful awaits...</p>
+
+<div class="summary" id="summary"></div>
+
+<div class="summary" style="margin-top:15px;">
+<b>A Little Note</b><br><br>
+Thank you for saying yes ❤️<br><br>
+Life becomes brighter whenever I get to spend time with you.<br><br>
+I'm already looking forward to our date, the laughter, and the memories we'll create.<br><br>
+Until then, I'll be counting the days. ❤️<br><br>
+— Ashuuu
+</div>
+</div>
+
+</div>
+
+<script>
+
+let time="", activity="", locationSel="";
+let foods=[];
+
+function go(id){
+document.querySelectorAll('.card > div').forEach(d=>d.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+}
+
+function setTime(t){ time=t; go('p4'); }
+function setActivity(a){ activity=a; go('p5'); }
+function setLocation(l){ locationSel=l; go('p6'); }
+
+function addFood(f){
+if(!foods.includes(f)){
+foods.push(f);
+
+let div=document.createElement('div');
+div.className="selected";
+div.innerText=f;
+document.getElementById('foodList').appendChild(div);
+}
+}
+
+function goFinal(){
+go('p7');
+
+let date=document.getElementById('date').value;
+
+document.getElementById('summary').innerHTML=`
+<b>📅 Date:</b> ${date}<br>
+<b>⏰ Time:</b> ${time}<br>
+<b>🎬 Activity:</b> ${activity}<br>
+<b>📍 Location:</b> ${locationSel}<br>
+<b>🍽️ Food:</b> ${foods.join(', ')}
+`;
+}
+
+/* hearts */
+for(let i=0;i<25;i++){
+let h=document.createElement('div');
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"%";
+h.style.fontSize=(14+Math.random()*20)+"px";
+h.style.animationDuration=(6+Math.random()*6)+"s";
+document.getElementById('hearts').appendChild(h);
+}
+
+</script>
+
+</body>
+</html>
